@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact · NovelWorks</title>
+<meta name="description" content="Report a bug, share an idea or ask a question about NovelWorks, the no-code visual novel editor.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23111'/%3E%3Ctext x='50' y='66' text-anchor='middle' font-family='Arial' font-weight='800' font-size='46' fill='%23fff'%3Enw%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ====== SETTINGS ======
+     Paste your Formspree form URL below (https://formspree.io/f/xxxxxxx). */
+  :root{
+    --bg:#FFFFFF; --text:#111111; --muted:#6B6B6B; --line:#E5E5E5; --soft:#F5F5F5;
+    --accent:#111111; --onAccent:#FFFFFF; --error:#B42318;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0B0B; --text:#F5F5F5; --muted:#A3A3A3; --line:#262626; --soft:#161616;
+      --accent:#F5F5F5; --onAccent:#0B0B0B; --error:#F97066;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0B0B; --text:#F5F5F5; --muted:#A3A3A3; --line:#262626; --soft:#161616;
+    --accent:#F5F5F5; --onAccent:#0B0B0B; --error:#F97066;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
+  a{color:var(--text)}
+  header{position:fixed;inset:0 0 auto 0;display:flex;align-items:center;justify-content:space-between;padding:20px 24px;z-index:3;background:var(--bg)}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .seal{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--onAccent);display:flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif;font-size:16px;letter-spacing:-.06em}
+  .word{font-family:Manrope,sans-serif;font-size:22px;letter-spacing:-.04em}
+  .b{font-weight:800}.r{font-weight:400}
+  .step-count{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);width:0;transition:width .5s ease;z-index:4}
+  main{height:100%;overflow:hidden}
+  .track{height:100%;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+  section{height:100vh;display:flex;align-items:center;justify-content:center;padding:96px 24px 48px}
+  section[hidden]{display:none}
+  .inner{width:100%;max-width:640px}
+  .num{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  h1,h2{font-weight:700;letter-spacing:-.035em;margin:0 0 12px;line-height:1.1}
+  h1{font-size:clamp(36px,7vw,64px)}
+  h2{font-size:clamp(26px,4.5vw,40px)}
+  .hint{color:var(--muted);margin:0 0 28px}
+  .choices{display:grid;gap:10px}
+  .choice{display:flex;align-items:center;gap:14px;width:100%;min-height:56px;padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);font:inherit;font-weight:500;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+  .choice:hover{border-color:var(--text)}
+  .choice[aria-checked="true"]{background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
+  .key{width:26px;height:26px;flex-shrink:0;border:1px solid currentColor;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;opacity:.7}
+  input[type=text],input[type=email],textarea,select{width:100%;padding:14px 0;border:0;border-bottom:2px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:22px;outline:none;transition:border-color .2s;border-radius:0}
+  textarea{resize:none;min-height:120px;line-height:1.4}
+  select{font-size:18px;appearance:none;cursor:pointer}
+  input:focus,textarea:focus,select:focus{border-bottom-color:var(--text)}
+  ::placeholder{color:var(--muted);opacity:.8}
+  .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  @media (max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
+  label.field{display:block;font-size:14px;font-weight:600;color:var(--muted);margin-top:18px}
+  .check{display:flex;gap:12px;align-items:flex-start;margin-top:24px;cursor:pointer;font-size:16px}
+  .check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--text);flex-shrink:0}
+  .actions{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border:0;border-radius:10px;background:var(--accent);color:var(--onAccent);font:inherit;font-weight:600;cursor:pointer;transition:opacity .15s}
+  .btn:hover{opacity:.85}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .ghost{background:transparent;color:var(--muted);border:0;font:inherit;cursor:pointer;padding:8px 4px}
+  .ghost:hover{color:var(--text)}
+  .enter{font-size:13px;color:var(--muted)}
+  .error{color:var(--error);font-size:15px;margin-top:12px;min-height:1.5em}
+  .privacy{font-size:13px;color:var(--muted);margin-top:16px}
+  :focus-visible{outline:2px solid var(--text);outline-offset:3px}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .done-mark{width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--onAccent);display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+  @media (prefers-reduced-motion: reduce){.track,.progress{transition:none}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header>
+  <a class="logo" href="#" aria-label="NovelWorks">
+    <span class="seal"><span class="b">n</span><span class="r">w</span></span>
+    <span class="word"><span class="b">novel</span><span class="r">works</span></span>
+  </a>
+  <span class="step-count" id="stepCount" aria-live="polite"></span>
+</header>
+
+<main>
+<form id="form" class="track" novalidate>
+  <!-- anti-spam honeypot -->
+  <div class="hp" aria-hidden="true"><label>Leave empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+
+  <section data-step="intro">
+    <div class="inner">
+      <h1>Talk to us.</h1>
+      <p class="hint">Found a bug? Have an idea? Just want to say hi? It takes one minute.</p>
+      <div class="actions">
+        <button type="button" class="btn" data-next>Start
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <span class="enter">press Enter ↵</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-step="topic">
+    <div class="inner">
+      <div class="num">1 →</div>
+      <h2 id="q-topic">What is this about?</h2>
+      <p class="hint">Pick one.</p>
+      <div class="choices" role="radiogroup" aria-labelledby="q-topic">
+        <button type="button" class="choice" role="radio" aria-checked="false" data-value="Bug"><span class="key">A</span>I found a bug</button>
+        <button type="button" class="choice" role="radio" aria-checked="false" data-value="Idea"><span class="key">B</span>I have an idea</button>
+        <button type="button" class="choice" role="radio" aria-checked="false" data-value="Question"><span class="key">C</span>I have a question</button>
+        <button type="button" class="choice" role="radio" aria-checked="false" data-value="Other"><span class="key">D</span>Something else</button>
+      </div>
+      <input type="hidden" name="topic" id="topic">
+      <p class="error" id="err-topic" role="alert"></p>
+    </div>
+  </section>
+
+  <section data-step="details" data-only="Bug">
+    <div class="inner">
+      <div class="num">2 →</div>
+      <h2>Where did it happen?</h2>
+      <p class="hint">This helps a lot to fix it fast. Skip if you're not sure.</p>
+      <div class="row">
+        <div>
+          <label class="field" for="os">Computer</label>
+          <select id="os" name="os">
+            <option value="">Choose…</option>
+            <option>macOS (Apple Silicon)</option>
+            <option>macOS (Intel)</option>
+            <option>Windows</option>
+            <option>In a web game (browser)</option>
+          </select>
+        </div>
+        <div>
+          <label class="field" for="version">NovelWorks version</label>
+          <input type="text" id="version" name="version" placeholder="e.g. 0.5.0-beta">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" data-next>Continue</button>
+        <span class="enter">press Enter ↵</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-step="message">
+    <div class="inner">
+      <div class="num" id="num-message">2 →</div>
+      <h2 id="q-message">Tell us more.</h2>
+      <p class="hint" id="hint-message">The more details, the better.</p>
+      <label for="message" class="hp">Your message</label>
+      <textarea id="message" name="message" placeholder="Type your message here…" required></textarea>
+      <p class="error" id="err-message" role="alert"></p>
+      <div class="actions">
+        <button type="button" class="btn" data-next>Continue</button>
+        <span class="enter">Shift + Enter for a new line</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-step="contact">
+    <div class="inner">
+      <div class="num" id="num-contact">3 →</div>
+      <h2>How can we reach you?</h2>
+      <p class="hint">We'll only use it to answer you.</p>
+      <label class="field" for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      <label class="field" for="name">Name <span style="font-weight:400">(optional)</span></label>
+      <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name">
+      <label class="check"><input type="checkbox" name="discord_invite" value="yes"> <span>Send me an invite when the NovelWorks Discord opens.</span></label>
+      <p class="error" id="err-contact" role="alert"></p>
+      <div class="actions">
+        <button type="submit" class="btn" id="submit">Send</button>
+        <span class="enter">press Enter ↵</span>
+      </div>
+      <p class="privacy">Your email is never shared or sold. Ask anytime and we'll delete it.</p>
+    </div>
+  </section>
+
+  <section data-step="thanks">
+    <div class="inner">
+      <div class="done-mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h2>Thank you.</h2>
+      <p class="hint">Your message is on its way. We read everything.</p>
+      <div class="actions"><button type="button" class="ghost" id="again">Send another message</button></div>
+    </div>
+  </section>
+</form>
+</main>
+
+<script>
+/* ====== SETTINGS: paste your Formspree URL here ====== */
+const FORM_ENDPOINT = "https://formspree.io/f/mvkzejpp";
+
+const form = document.getElementById("form");
+const all = [...form.querySelectorAll("section")];
+const progress = document.getElementById("progress");
+const stepCount = document.getElementById("stepCount");
+let index = 0;
+
+function visibleSteps(){
+  const topic = document.getElementById("topic").value;
+  return all.filter(s => !s.dataset.only || s.dataset.only === topic);
+}
+function render(){
+  const steps = visibleSteps();
+  all.forEach(s => { s.hidden = !steps.includes(s); });
+  const cur = steps[index];
+  form.style.transform = `translateY(-${index * 100}vh)`;
+  const questions = steps.filter(s => !["intro","thanks"].includes(s.dataset.step));
+  const qi = questions.indexOf(cur);
+  stepCount.textContent = qi >= 0 ? `${qi + 1} / ${questions.length}` : "";
+  const done = cur.dataset.step === "thanks" ? 1 : Math.max(0, qi) / questions.length;
+  progress.style.width = (done * 100) + "%";
+  // numbering + wording depending on topic
+  const topic = document.getElementById("topic").value;
+  const bug = topic === "Bug";
+  document.getElementById("num-message").textContent = (bug ? 3 : 2) + " →";
+  document.getElementById("num-contact").textContent = (bug ? 4 : 3) + " →";
+  document.getElementById("q-message").textContent = bug ? "What went wrong?" : topic === "Idea" ? "What's your idea?" : "Tell us more.";
+  document.getElementById("hint-message").textContent = bug ? "What did you do, what did you expect, what happened instead?" : "The more details, the better.";
+  // focus
+  setTimeout(() => {
+    const f = cur.querySelector(".choice[aria-checked='true'], .choice, textarea, input:not([type=hidden]):not([name=_gotcha]), select, .btn, .ghost");
+    if (f) f.focus({ preventScroll: true });
+  }, 450);
+}
+function validate(step){
+  const name = step.dataset.step;
+  if (name === "topic" && !document.getElementById("topic").value){ show("err-topic", "Please pick one."); return false; }
+  if (name === "message" && document.getElementById("message").value.trim().length < 5){ show("err-message", "Please write a few words."); return false; }
+  if (name === "contact"){
+    const e = document.getElementById("email");
+    if (!e.value.trim() || !e.checkValidity()){ show("err-contact", "Please enter a valid email."); return false; }
+  }
+  return true;
+}
+function show(id, msg){ const el = document.getElementById(id); el.textContent = msg; setTimeout(() => el.textContent = "", 3500); }
+function next(){
+  const steps = visibleSteps();
+  if (!validate(steps[index])) return;
+  if (index < steps.length - 1){ index++; render(); }
+}
+function prev(){ if (index > 0 && visibleSteps()[index].dataset.step !== "thanks"){ index--; render(); } }
+
+form.querySelectorAll("[data-next]").forEach(b => b.addEventListener("click", next));
+form.querySelectorAll(".choice").forEach(c => c.addEventListener("click", () => {
+  form.querySelectorAll(".choice").forEach(x => x.setAttribute("aria-checked", "false"));
+  c.setAttribute("aria-checked", "true");
+  document.getElementById("topic").value = c.dataset.value;
+  setTimeout(next, 250);
+}));
+
+document.addEventListener("keydown", e => {
+  const step = visibleSteps()[index].dataset.step;
+  if (step === "topic"){
+    const map = { a:0, b:1, c:2, d:3 };
+    const k = e.key.toLowerCase();
+    if (k in map){ form.querySelectorAll(".choice")[map[k]].click(); return; }
+  }
+  if (e.key === "Enter" && !e.shiftKey){
+    if (e.target.tagName === "TEXTAREA" || e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || step === "intro"){
+      if (e.target.type === "checkbox") return;
+      e.preventDefault();
+      if (step === "contact") form.requestSubmit(); else next();
+    }
+  }
+  if (e.key === "ArrowUp" && e.altKey) prev();
+});
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const contact = all.find(s => s.dataset.step === "contact");
+  if (!validate(contact)) return;
+  const btn = document.getElementById("submit");
+  btn.disabled = true; btn.textContent = "Sending…";
+  try {
+    const res = await fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+    if (!res.ok) throw new Error();
+    next();
+  } catch {
+    show("err-contact", "Something went wrong. Please try again in a moment.");
+  } finally {
+    btn.disabled = false; btn.textContent = "Send";
+  }
+});
+
+document.getElementById("again").addEventListener("click", () => {
+  form.reset();
+  form.querySelectorAll(".choice").forEach(x => x.setAttribute("aria-checked", "false"));
+  document.getElementById("topic").value = "";
+  index = 1; render();
+});
+
+window.addEventListener("resize", render);
+render();
+</script>
+</body>
+</html>
